@@ -28,7 +28,7 @@ function Blocks(blocks)
                         -- Match key followed by punctuation
                         -- k or k. or k, or k; of k: or k...
                         -- Match plural key (followed by s)
-                        local match = string.match(el.text, '^' .. k .. '[s]?%p?$')
+                        local match = string.match(el.text, '^' .. k .. '[s]?%p*$')
                         if match then
                             local acronym = "<abbr title=\"" .. v .. "\">" .. k .. "</abbr>"
                             local text = string.gsub(el.text, k, acronym, 1)

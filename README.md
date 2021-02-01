@@ -27,6 +27,7 @@ You can use CSS to style your HTML.
 ### Limitations
 
 * Each acronym definition must be on their own line with a blank line between them.
+* The filter will not match an acronym if it is followed by an ellipsis.
 
 ## Output
 
