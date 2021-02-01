@@ -27,6 +27,6 @@ You can use CSS to style your HTML.
 <p>You can use <abbr title="Cascading Style Sheets">CSS</abbr> to style your <abbr title="HyperText Markup Language">HTML</abbr>.</p>
 ```
 
-## Limitation
+## Limitations
 
 * Each acronym definition must be on their own line with a blank line between them.
