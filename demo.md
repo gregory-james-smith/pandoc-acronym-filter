@@ -12,6 +12,10 @@ Websites **use HTTP to communicate** their contents with browsers.
 
 This is a sentence that includes *some* text formatting which should not be affected by the acronym definition.
 
+I have a lot of old CDs.
+
+*[CD]: Compact Disk
+
 ```
 Do not expect acronyms in code blocks, like this one HTML, to be modified.
 ```

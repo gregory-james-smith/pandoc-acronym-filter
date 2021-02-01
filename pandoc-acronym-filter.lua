@@ -24,14 +24,14 @@ function Blocks(blocks)
             output[i] = pandoc.walk_block(block, {
                 Str = function(el)
                     -- Replace acronym with abbreviation code
-                    -- TODO: Also need to check for plurals
                     for k, v in pairs(definitions) do
                         -- Match key followed by punctuation
                         -- k or k. or k, or k; of k: or k...
-                        local match = string.match(el.text, k .. '%p?')
+                        -- Match plural key (followed by s)
+                        local match = string.match(el.text, '^' .. k .. '[s]?%p?$')
                         if match then
                             local acronym = "<abbr title=\"" .. v .. "\">" .. k .. "</abbr>"
-                            local text = string.gsub(el.text, k, acronym)
+                            local text = string.gsub(el.text, k, acronym, 1)
                             return pandoc.RawInline("html", text)
                         end
                     end
