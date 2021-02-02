@@ -22,7 +22,7 @@ You can use CSS to style your HTML.
 ### Features
 
 * The filter will match the acronym even if it is followed by punctuation.
-* The filter will match the acronym even if it is plural (has an `s` suffix).
+* The filter will match the acronym even if it is an English plural (has an `s` suffix).
 
 ### Limitations
 
