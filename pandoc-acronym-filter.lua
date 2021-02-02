@@ -54,11 +54,16 @@ function Pandoc(doc)
         end
     end
     -- Add list of acronyms
-    -- TODO: Sort acronyms alphabetically https://stackoverflow.com/questions/26160327/sorting-a-lua-table-by-key
     -- TODO: Add acronym to "acronym" header/config header or at end of doc
     if FORMAT == 'latex' then
+        -- Get a sorted list of acronyms
+        local keys = {}
+        for k in pairs(definitions) do table.insert(keys, k) end
+        table.sort(keys)
+        -- Add acronym descriptions in alphabetical order
         table.insert(output, pandoc.RawBlock("latex", "\\begin{acronym}"))
-        for k, v in pairs(definitions) do
+        for _, k in ipairs(keys) do
+            local v = definitions[k]
             local acronym = "\\acro{" .. k .. "}{" .. v .. "}"
             local block = pandoc.RawBlock("latex", acronym)
             table.insert(output, block)
