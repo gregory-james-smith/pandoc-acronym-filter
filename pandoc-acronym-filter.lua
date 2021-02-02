@@ -37,8 +37,10 @@ function Pandoc(doc)
                                 local text = string.gsub(el.text, k, acronym, 1)
                                 return pandoc.RawInline("html", text)
                             elseif FORMAT == 'latex' then
-                                local acronym = "\\ac{" .. k .. "}"
-                                local text = string.gsub(el.text, k, acronym, 1)
+                                local plural = string.match(el.text, '^' .. k .. '[s]%p*$')
+                                local new = plural and "\\acp{" .. k .. "}" or "\\ac{" .. k .. "}"
+                                local old = plural and k .. 's' or k
+                                local text = string.gsub(el.text, old, new, 1)
                                 return pandoc.RawInline("latex", text)
                             end
                             return el.text

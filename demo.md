@@ -16,7 +16,7 @@ Websites **use HTTP to communicate** their contents with browsers.
 
 *[HTTP]: Hyper Text Transfer Protocol
 
-This is a sentence that includes *some* text formatting which should not be affected by the acronym definition.
+This is a sentence that includes *some* text formatting which should not be affected by the acronym definition. HTTP is often used in browsers.
 
 # Plurals
 
