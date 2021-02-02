@@ -49,6 +49,7 @@ You can use \ac{CSS} to style your \ac{HTML}.
 
 * Acronyms will appear in long form the first instance and the following instances in short form.
 * List of acronyms are in alphabetical order.
+* Uses the `acronym` package.
 
 ### Limitations
 
