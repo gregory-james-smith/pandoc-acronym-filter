@@ -19,7 +19,28 @@ You can use CSS to style your HTML.
 *[HTML]: Hyper Text Markup Language
 ```
 
-### Features
+## Output
+
+### HTML
+
+```html
+<p>You can use <abbr title="Cascading Style Sheets">CSS</abbr> to style your <abbr title="HyperText Markup Language">HTML</abbr>.</p>
+```
+
+### Latex
+
+```latex
+You can use \ac{CSS} to style your \ac{HTML}.
+
+\begin{acronym}
+    \acro{CSS}{Cascading Style Sheets}
+    \acro{HTML}{Hyper Text Markup Language}
+\end{acronym}
+```
+
+## Features
+
+### Benefits
 
 * The filter will match the acronym even if it is followed by punctuation.
 * The filter will match the acronym even if it is an English plural (has an `s` suffix).
@@ -34,11 +55,3 @@ You can use CSS to style your HTML.
 * Each acronym definition must be on their own line with a blank line between them.
 * The filter will not match an acronym if it is followed by an ellipsis.
 * Will not work for acronyms which are plural without `s` suffix, for example, Systems on a Chip (SOACs).
-
-## Output
-
-### HTML
-
-```html
-<p>You can use <abbr title="Cascading Style Sheets">CSS</abbr> to style your <abbr title="HyperText Markup Language">HTML</abbr>.</p>
-```
