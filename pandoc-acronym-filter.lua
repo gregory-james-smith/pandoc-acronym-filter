@@ -1,6 +1,7 @@
 
 -- TODO: Add acronym package
-function Blocks(blocks)
+function Pandoc(doc)
+    local blocks = doc.blocks
     -- Get all the acronym definitions
     definitions = {}
     filtered_blocks = {}
@@ -52,7 +53,6 @@ function Blocks(blocks)
     end
     -- Add list of acronyms
     -- TODO: Sort acronyms alphabetically https://stackoverflow.com/questions/26160327/sorting-a-lua-table-by-key
-    -- TODO: Fix so that only done at end of doc not at end of list of blocks
     -- TODO: Add acronym to "acronym" header/config header or at end of doc
     if FORMAT == 'latex' then
         table.insert(output, pandoc.RawBlock("latex", "\\begin{acronym}"))
@@ -63,5 +63,5 @@ function Blocks(blocks)
         end
         table.insert(output, pandoc.RawBlock("latex", "\\end{acronym}"))
     end
-    return output
+    return pandoc.Pandoc(output, doc.meta)
 end
