@@ -33,5 +33,3 @@ Do not expect acronyms in code blocks, like this one HTML, to be modified.
 ```
 
 > And acronyms in quotations, like this one W3C, should also not be modified.
-
-# Acronyms

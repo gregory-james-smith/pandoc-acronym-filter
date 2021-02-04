@@ -3,14 +3,19 @@
 function Pandoc(doc)
     local blocks = doc.blocks
     -- Get all the acronym definitions
-    definitions = {}
-    filtered_blocks = {}
+    local definitions = {}
+    -- Filter out acronym definitions
+    local filtered_blocks = {}
+    -- Sorted list of acronyms
+    local keys = {}
     for i, block in pairs(blocks) do
         if (block.tag == "Para") then
             local content = pandoc.utils.stringify(block.content)
             local acronym, description = string.match(content, '%*%[(.*)%]: (.*)')
             if (acronym) then
                 definitions[acronym] = description
+                -- Record all the keys and sort later
+                table.insert(keys, acronym)
                 -- Remove acronym definitions
             else
                 table.insert(filtered_blocks, block)
@@ -57,10 +62,9 @@ function Pandoc(doc)
     -- TODO: Add acronym to "acronym" header/config header or at end of doc
     if FORMAT == 'latex' then
         -- Get a sorted list of acronyms
-        local keys = {}
-        for k in pairs(definitions) do table.insert(keys, k) end
         table.sort(keys)
         -- Add acronym descriptions in alphabetical order
+        table.insert(output, pandoc.Header(1, "Acronyms"))
         table.insert(output, pandoc.RawBlock("latex", "\\begin{acronym}"))
         for _, k in ipairs(keys) do
             local v = definitions[k]
