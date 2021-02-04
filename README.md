@@ -44,6 +44,7 @@ You can use \ac{CSS} to style your \ac{HTML}.
 
 * The filter will match the acronym even if it is followed by punctuation.
 * The filter will match the acronym even if it is an English plural (has an `s` suffix).
+* The filter will add an acronym header above a list of acronym definitions at the end of the document.
 
 #### Latex
 
