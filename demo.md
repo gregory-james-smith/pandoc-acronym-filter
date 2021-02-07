@@ -1,7 +1,5 @@
 ---
 title: Demonstration of `pandoc-acronym-filter`
-header-includes: |
-    \usepackage[printonlyused,nohyperlinks]{acronym}
 ---
 
 # Demonstration

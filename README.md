@@ -55,5 +55,7 @@ You can use \ac{CSS} to style your \ac{HTML}.
 ### Limitations
 
 * Each acronym definition must be on their own line with a blank line between them.
-* The filter will not match an acronym if it is followed by an ellipsis.
+* The filter will not match an acronym if it is followed by an ellipsis. The ellipsis is not recognised as punctuation by the pattern matching.
 * Will not work for acronyms which are plural without `s` suffix, for example, Systems on a Chip (SOACs).
+* Filter will only work for HTML and Latex (including PDF) outputs. Other outputs will only have the acronym definitions removed from the document.
+* Filter will not match an acronym with preceding punctuation like an opening bracket, for example `(HTML)`.

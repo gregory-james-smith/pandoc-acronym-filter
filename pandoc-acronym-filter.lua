@@ -1,6 +1,51 @@
 
--- TODO: Add acronym package
+        -- "header-includes": {
+        --     "t": "MetaList",
+        --     "c": [
+        --         {
+        --             "t": "MetaBlocks",
+        --             "c": [
+        --                 {
+        --                     "t": "RawBlock",
+        --                     "c": [
+        --                         "latex",
+        --                         "\\usepackage[printonlyused,nohyperlinks]{acronym}"
+        --                     ]
+        --                 }
+        --             ]
+        --         }
+        --     ]
+        -- },
+
+
+
+--         header-includes:
+-- - |
+--   ```{=latex}
+--   \usepackage[printonlyused,nohyperlinks]{acronym}
+--   ```
+
+
+
+
 function Pandoc(doc)
+    -- Add acronym package
+    -- TODO: Add package options
+    local meta = doc.meta
+    if FORMAT == 'latex' then
+        local package = pandoc.RawBlock("latex", "\\usepackage[printonlyused,nohyperlinks]{acronym}")
+        if meta["header-includes"] then
+
+        else
+            local b = {}
+            table.insert(b, package)
+            local c = pandoc.MetaBlocks(b)
+            local d = {}
+            table.insert(d, c)
+            meta["header-includes"] = pandoc.MetaList(d)
+        end
+    end
+
     local blocks = doc.blocks
     -- Get all the acronym definitions
     local definitions = {}
@@ -74,5 +119,5 @@ function Pandoc(doc)
         end
         table.insert(output, pandoc.RawBlock("latex", "\\end{acronym}"))
     end
-    return pandoc.Pandoc(output, doc.meta)
+    return pandoc.Pandoc(output, meta)
 end
