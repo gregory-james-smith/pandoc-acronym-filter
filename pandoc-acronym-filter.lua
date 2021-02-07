@@ -1,22 +1,39 @@
+-- Get options metadata
+function get_options(doc)
+    local meta = doc.meta
+    local options = {}
+    if meta["pandoc-acronym-filter"]["options"] then
+        for _,i in ipairs(meta["pandoc-acronym-filter"]["options"]) do
+            for _,j in ipairs(i) do
+                for _,k in pairs(j) do
+                    table.insert(options, k)
+                end
+            end
+        end
+    else
+        -- Default values
+        table.insert(options, "printonlyused")
+        table.insert(options, "nohyperlinks")
+    end
+    return options
+end
+
+-- Get title metadata
+function get_title(doc)
+    local meta = doc.meta
+    local title = meta["pandoc-acronym-filter"]["title"]
+    if title then
+        return pandoc.utils.stringify(title)
+    else
+        return nil
+    end
+end
 
 function Pandoc(doc)
     -- Add acronym package
     local meta = doc.meta
-    local options = {}
+    local options = get_options(doc)
     if FORMAT == 'latex' then
-        if meta["pandoc-acronym-filter"]["options"] then
-            for _,i in ipairs(meta["pandoc-acronym-filter"]["options"]) do
-                for _,j in ipairs(i) do
-                    for _,k in pairs(j) do
-                        table.insert(options, k)
-                    end
-                end
-            end
-        else
-            -- Default values
-            table.insert(options, "printonlyused")
-            table.insert(options, "nohyperlinks")
-        end
         local package = pandoc.RawBlock("latex", "\\usepackage[".. table.concat(options, "," ) .. "]{acronym}")
         local metablocks = {}
         table.insert(metablocks, package)
@@ -114,11 +131,11 @@ function Pandoc(doc)
                 table.insert(output, v)
             end
         else
-            local title = meta["pandoc-acronym-filter"]["title"]
+            local title = get_title(doc)
             if title then
                 -- Try to find title
                 for index, block in ipairs(output) do
-                    if block.tag == "Header" and pandoc.utils.stringify(block.content) == pandoc.utils.stringify(title) then
+                    if block.tag == "Header" and pandoc.utils.stringify(block.content) == title then
                         for i,v in ipairs(list_acronyms) do
                             table.insert(output, index + i, v)
                         end
