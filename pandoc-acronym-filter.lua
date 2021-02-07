@@ -89,16 +89,14 @@ function filter_document_for_acronyms(doc)
     local filtered_blocks = {}
 
     for i, block in pairs(doc.blocks) do
-        if (block.tag == "Para") then
-            local content = pandoc.utils.stringify(block.content)
-            local acronym, description = string.match(content, '%*%[(.*)%]: (.*)')
-            if (acronym) then
-                definitions[acronym] = description
-                table.insert(keys, acronym)
-                -- Do not record this block
-            else
-                table.insert(filtered_blocks, block)
-            end
+        local is_para = block.tag == "Para"
+        local content = is_para and pandoc.utils.stringify(block.content) or ""
+        local acronym, description = string.match(content, '%*%[(.*)%]: (.*)')
+
+        if is_para and acronym then
+            -- Do not add to filtered blocks
+            definitions[acronym] = description
+            table.insert(keys, acronym)
         else
             table.insert(filtered_blocks, block)
         end
