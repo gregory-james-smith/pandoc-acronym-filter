@@ -69,7 +69,6 @@ end
 function get_acronym_declarations(keys, definitions)
     local acronyms = {}
     -- Add acronym descriptions in alphabetical order
-    table.sort(keys)
     table.insert(acronyms, pandoc.RawBlock("latex", "\\begin{acronym}"))
     for _, k in ipairs(keys) do
         local v = definitions[k]
@@ -81,27 +80,22 @@ function get_acronym_declarations(keys, definitions)
     return acronyms
 end
 
-
-function Pandoc(doc)
-    
-    add_packages(doc)
-
-    local blocks = doc.blocks
-    -- Get all the acronym definitions
-    local definitions = {}
-    -- Filter out acronym definitions
-    local filtered_blocks = {}
-    -- Sorted list of acronyms
+function filter_document_for_acronyms(doc)
+    -- List of acronyms sorted alphabetically
     local keys = {}
-    for i, block in pairs(blocks) do
+    -- Map of acronym definitions
+    local definitions = {}
+    -- Document blocks with the acronym definitions filtered out
+    local filtered_blocks = {}
+
+    for i, block in pairs(doc.blocks) do
         if (block.tag == "Para") then
             local content = pandoc.utils.stringify(block.content)
             local acronym, description = string.match(content, '%*%[(.*)%]: (.*)')
             if (acronym) then
                 definitions[acronym] = description
-                -- Record all the keys and sort later
                 table.insert(keys, acronym)
-                -- Remove acronym definitions
+                -- Do not record this block
             else
                 table.insert(filtered_blocks, block)
             end
@@ -109,6 +103,17 @@ function Pandoc(doc)
             table.insert(filtered_blocks, block)
         end
     end
+
+    table.sort(keys)
+    return keys, definitions, filtered_blocks
+end
+
+function Pandoc(doc)
+    
+    add_packages(doc)
+
+    local keys, definitions, filtered_blocks = filter_document_for_acronyms(doc)
+    
     -- Replace all the acronyms
     output = {}
     for i, block in pairs(filtered_blocks) do
