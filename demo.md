@@ -26,6 +26,8 @@ Websites **use HTTP to communicate** their contents with browsers.
 
 This is a sentence that includes *some* text formatting which should not be affected by the acronym definition. HTTP is often used in browsers.
 
+# My acronyms
+
 # Plurals
 
 I have a lot of old CDs.

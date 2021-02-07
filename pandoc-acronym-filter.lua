@@ -114,41 +114,26 @@ function Pandoc(doc)
                 table.insert(output, v)
             end
         else
-            table.insert(output, pandoc.Header(1, "Acronyms"))
-            for _,v in ipairs(list_acronyms) do
-                table.insert(output, v)
+            local title = meta["pandoc-acronym-filter"]["title"]
+            if title then
+                -- Try to find title
+                for index, block in ipairs(output) do
+                    if block.tag == "Header" and pandoc.utils.stringify(block.content) == pandoc.utils.stringify(title) then
+                        for i,v in ipairs(list_acronyms) do
+                            table.insert(output, index + i, v)
+                        end
+                        break
+                    end
+                end
+            else
+                -- No title given so add Acronym section at end of document
+                table.insert(output, pandoc.Header(1, "Acronyms"))
+                for _,v in ipairs(list_acronyms) do
+                    table.insert(output, v)
+                end
             end
         end
 
     end
     return pandoc.Pandoc(output, meta)
 end
-
-
-
-
-
-
-
-
-
-
-
--- nolist
--- - defs at end
-
--- title & list
--- - Try to find title
--- - If not found add heading and defs at end
--- - If found add defs underneath heading
-
--- no title & list
--- - Acronym default heading
--- - Add heading at end
--- - Add defs at end
-
-
-
-
-
-

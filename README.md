@@ -63,6 +63,14 @@ header-includes:
   ```
 ---
 ``````
+* Options can be sent to acronym package with the `options` metadata.
+* A title can be given with the `title` metadata. If provided the acronyms are listed under that heading. The heading must already exist in the document.
+
+```
+pandoc-acronym-filter:
+  options: [printonlyused]
+  title: "My acronyms"
+```
 
 ### Limitations
 
