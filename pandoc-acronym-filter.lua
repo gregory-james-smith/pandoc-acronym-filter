@@ -29,6 +29,13 @@ function get_title(doc)
     end
 end
 
+-- Utility function to append a list to the bottom of another table
+function append_list_to_table_bottom(t, append)
+    for _,v in ipairs(append) do
+        table.insert(t, v)
+    end
+end
+
 -- Add Latex packages to document (acronym)
 function add_packages(doc)
     if FORMAT == 'latex' then
@@ -142,9 +149,7 @@ function Pandoc(doc)
 
         -- No list
         if has_nolist(doc) then
-            for _,v in ipairs(list_acronyms) do
-                table.insert(output, v)
-            end
+            append_list_to_table_bottom(output, list_acronyms)
         else
             local title = get_title(doc)
             if title then
@@ -160,9 +165,7 @@ function Pandoc(doc)
             else
                 -- No title given so add Acronym section at end of document
                 table.insert(output, pandoc.Header(1, "Acronyms"))
-                for _,v in ipairs(list_acronyms) do
-                    table.insert(output, v)
-                end
+                append_list_to_table_bottom(output, list_acronyms)
             end
         end
 
