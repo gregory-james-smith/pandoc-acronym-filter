@@ -30,6 +30,8 @@ You can use CSS to style your HTML.
 ### Latex
 
 ```latex
+\usepackage[printonlyused,nohyperlinks]{acronym}
+
 You can use \ac{CSS} to style your \ac{HTML}.
 
 \begin{acronym}
@@ -51,6 +53,16 @@ You can use \ac{CSS} to style your \ac{HTML}.
 * Acronyms will appear in long form the first instance and the following instances in short form.
 * List of acronyms are in alphabetical order.
 * Uses the `acronym` package.
+* Adds the `acronym` package to the TEX preamble. There is no need to add the following to the Markdown metadata block:
+``````
+---
+header-includes:
+- |
+  ```{=latex}
+  \usepackage[printonlyused,nohyperlinks]{acronym}
+  ```
+---
+``````
 
 ### Limitations
 

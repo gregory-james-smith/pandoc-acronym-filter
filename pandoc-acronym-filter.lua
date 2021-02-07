@@ -1,48 +1,18 @@
 
-        -- "header-includes": {
-        --     "t": "MetaList",
-        --     "c": [
-        --         {
-        --             "t": "MetaBlocks",
-        --             "c": [
-        --                 {
-        --                     "t": "RawBlock",
-        --                     "c": [
-        --                         "latex",
-        --                         "\\usepackage[printonlyused,nohyperlinks]{acronym}"
-        --                     ]
-        --                 }
-        --             ]
-        --         }
-        --     ]
-        -- },
-
-
-
---         header-includes:
--- - |
---   ```{=latex}
---   \usepackage[printonlyused,nohyperlinks]{acronym}
---   ```
-
-
-
-
 function Pandoc(doc)
     -- Add acronym package
     -- TODO: Add package options
     local meta = doc.meta
     if FORMAT == 'latex' then
         local package = pandoc.RawBlock("latex", "\\usepackage[printonlyused,nohyperlinks]{acronym}")
+        local metablocks = {}
+        table.insert(metablocks, package)
         if meta["header-includes"] then
-
+            table.insert(meta["header-includes"], metablocks)
         else
-            local b = {}
-            table.insert(b, package)
-            local c = pandoc.MetaBlocks(b)
-            local d = {}
-            table.insert(d, c)
-            meta["header-includes"] = pandoc.MetaList(d)
+            local metalist = {}
+            table.insert(metalist, pandoc.MetaBlocks(metablocks))
+            meta["header-includes"] = pandoc.MetaList(metalist)
         end
     end
 

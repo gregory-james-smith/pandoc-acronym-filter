@@ -1,5 +1,10 @@
 ---
 title: Demonstration of `pandoc-acronym-filter`
+header-includes:
+- |
+  ```{=latex}
+  \usepackage{geometry}
+  ```
 ---
 
 # Demonstration
