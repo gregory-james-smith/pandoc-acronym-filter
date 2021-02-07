@@ -47,6 +47,17 @@ function add_packages(doc)
     end
 end
 
+-- Returns true if nolist option
+function has_nolist(doc)
+    local options = get_options(doc)
+    for _, v in ipairs(options) do
+        if v == "nolist" then
+            return true
+        end
+    end
+    return false
+end
+
 function Pandoc(doc)
     
     add_packages(doc)
@@ -110,15 +121,6 @@ function Pandoc(doc)
     end
     -- Add list of acronyms
     if FORMAT == 'latex' then
-        -- Check for nolist option and remove heading if present
-        local nolist = false
-        local options = get_options(doc)
-        for _, v in ipairs(options) do
-            if v == "nolist" then
-                nolist = true
-            end
-        end
-
         -- Add acronym descriptions in alphabetical order
         local list_acronyms = {}
         table.sort(keys)
@@ -132,7 +134,7 @@ function Pandoc(doc)
         table.insert(list_acronyms, pandoc.RawBlock("latex", "\\end{acronym}"))
 
         -- No list
-        if nolist then
+        if has_nolist(doc) then
             for _,v in ipairs(list_acronyms) do
                 table.insert(output, v)
             end
