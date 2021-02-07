@@ -2,8 +2,8 @@
 function Pandoc(doc)
     -- Add acronym package
     local meta = doc.meta
+    local options = {}
     if FORMAT == 'latex' then
-        local options = {}
         if meta["pandoc-acronym-filter"] then
             for _,i in ipairs(meta["pandoc-acronym-filter"]) do
                 for _,j in ipairs(i) do
@@ -89,10 +89,19 @@ function Pandoc(doc)
     -- Add list of acronyms
     -- TODO: Add acronym to "acronym" header/config header or at end of doc
     if FORMAT == 'latex' then
+        -- Check for nolist option and remove heading if present
+        local nolist = false
+        for _,v in ipairs(options) do
+            if v == "nolist" then
+                nolist = true
+            end
+        end
+        if not nolist then
+            table.insert(output, pandoc.Header(1, "Acronyms"))
+        end
         -- Get a sorted list of acronyms
         table.sort(keys)
         -- Add acronym descriptions in alphabetical order
-        table.insert(output, pandoc.Header(1, "Acronyms"))
         table.insert(output, pandoc.RawBlock("latex", "\\begin{acronym}"))
         for _, k in ipairs(keys) do
             local v = definitions[k]
