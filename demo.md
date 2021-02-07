@@ -5,7 +5,9 @@ header-includes:
   ```{=latex}
   \usepackage{geometry}
   ```
-pandoc-acronym-filter: [footnote,printonlyused]
+pandoc-acronym-filter:
+  options: [printonlyused]
+  title: "My acronyms"
 ---
 
 # Demonstration

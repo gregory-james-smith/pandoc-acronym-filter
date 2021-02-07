@@ -4,8 +4,8 @@ function Pandoc(doc)
     local meta = doc.meta
     local options = {}
     if FORMAT == 'latex' then
-        if meta["pandoc-acronym-filter"] then
-            for _,i in ipairs(meta["pandoc-acronym-filter"]) do
+        if meta["pandoc-acronym-filter"]["options"] then
+            for _,i in ipairs(meta["pandoc-acronym-filter"]["options"]) do
                 for _,j in ipairs(i) do
                     for _,k in pairs(j) do
                         table.insert(options, k)
@@ -87,29 +87,68 @@ function Pandoc(doc)
         end
     end
     -- Add list of acronyms
-    -- TODO: Add acronym to "acronym" header/config header or at end of doc
     if FORMAT == 'latex' then
         -- Check for nolist option and remove heading if present
         local nolist = false
-        for _,v in ipairs(options) do
+        for _, v in ipairs(options) do
             if v == "nolist" then
                 nolist = true
             end
         end
-        if not nolist then
-            table.insert(output, pandoc.Header(1, "Acronyms"))
-        end
-        -- Get a sorted list of acronyms
-        table.sort(keys)
+
         -- Add acronym descriptions in alphabetical order
-        table.insert(output, pandoc.RawBlock("latex", "\\begin{acronym}"))
+        local list_acronyms = {}
+        table.sort(keys)
+        table.insert(list_acronyms, pandoc.RawBlock("latex", "\\begin{acronym}"))
         for _, k in ipairs(keys) do
             local v = definitions[k]
             local acronym = "\\acro{" .. k .. "}{" .. v .. "}"
             local block = pandoc.RawBlock("latex", acronym)
-            table.insert(output, block)
+            table.insert(list_acronyms, block)
         end
-        table.insert(output, pandoc.RawBlock("latex", "\\end{acronym}"))
+        table.insert(list_acronyms, pandoc.RawBlock("latex", "\\end{acronym}"))
+
+        -- No list
+        if nolist then
+            for _,v in ipairs(list_acronyms) do
+                table.insert(output, v)
+            end
+        else
+            table.insert(output, pandoc.Header(1, "Acronyms"))
+            for _,v in ipairs(list_acronyms) do
+                table.insert(output, v)
+            end
+        end
+
     end
     return pandoc.Pandoc(output, meta)
 end
+
+
+
+
+
+
+
+
+
+
+
+-- nolist
+-- - defs at end
+
+-- title & list
+-- - Try to find title
+-- - If not found add heading and defs at end
+-- - If found add defs underneath heading
+
+-- no title & list
+-- - Acronym default heading
+-- - Add heading at end
+-- - Add defs at end
+
+
+
+
+
+
