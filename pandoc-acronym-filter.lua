@@ -81,6 +81,7 @@ function get_acronym_declarations(keys, definitions)
     return acronyms
 end
 
+
 function Pandoc(doc)
     
     add_packages(doc)
@@ -144,31 +145,26 @@ function Pandoc(doc)
     end
     -- Add list of acronyms
     if FORMAT == 'latex' then
-
-        local list_acronyms = get_acronym_declarations(keys, definitions)
-
+        local acronym_declarations = get_acronym_declarations(keys, definitions)
+        local title = get_title(doc)
         -- No list
         if has_nolist(doc) then
-            append_list_to_table_bottom(output, list_acronyms)
-        else
-            local title = get_title(doc)
-            if title then
-                -- Try to find title
-                for index, block in ipairs(output) do
-                    if block.tag == "Header" and pandoc.utils.stringify(block.content) == title then
-                        for i,v in ipairs(list_acronyms) do
-                            table.insert(output, index + i, v)
-                        end
-                        break
+            append_list_to_table_bottom(output, acronym_declarations)
+        -- Title: Add declarations underneath heading
+        elseif title then
+            for index, block in ipairs(output) do
+                if block.tag == "Header" and pandoc.utils.stringify(block.content) == title then
+                    for i,v in ipairs(acronym_declarations) do
+                        table.insert(output, index + i, v)
                     end
+                    break
                 end
-            else
-                -- No title given so add Acronym section at end of document
-                table.insert(output, pandoc.Header(1, "Acronyms"))
-                append_list_to_table_bottom(output, list_acronyms)
             end
+        -- No title: Add declarations at bottom
+        else
+            table.insert(output, pandoc.Header(1, "Acronyms"))
+            append_list_to_table_bottom(output, acronym_declarations)
         end
-
     end
     return pandoc.Pandoc(output, doc.meta)
 end
