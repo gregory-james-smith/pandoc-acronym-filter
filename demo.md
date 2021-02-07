@@ -5,6 +5,7 @@ header-includes:
   ```{=latex}
   \usepackage{geometry}
   ```
+pandoc-acronym-filter: [footnote,printonlyused]
 ---
 
 # Demonstration

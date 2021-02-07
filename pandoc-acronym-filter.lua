@@ -1,10 +1,23 @@
 
 function Pandoc(doc)
     -- Add acronym package
-    -- TODO: Add package options
     local meta = doc.meta
     if FORMAT == 'latex' then
-        local package = pandoc.RawBlock("latex", "\\usepackage[printonlyused,nohyperlinks]{acronym}")
+        local options = {}
+        if meta["pandoc-acronym-filter"] then
+            for _,i in ipairs(meta["pandoc-acronym-filter"]) do
+                for _,j in ipairs(i) do
+                    for _,k in pairs(j) do
+                        table.insert(options, k)
+                    end
+                end
+            end
+        else
+            -- Default values
+            table.insert(options, "printonlyused")
+            table.insert(options, "nohyperlinks")
+        end
+        local package = pandoc.RawBlock("latex", "\\usepackage[".. table.concat(options, "," ) .. "]{acronym}")
         local metablocks = {}
         table.insert(metablocks, package)
         if meta["header-includes"] then

@@ -53,7 +53,7 @@ You can use \ac{CSS} to style your \ac{HTML}.
 * Acronyms will appear in long form the first instance and the following instances in short form.
 * List of acronyms are in alphabetical order.
 * Uses the `acronym` package.
-* Adds the `acronym` package to the TEX preamble. There is no need to add the following to the Markdown metadata block:
+* Adds the `acronym` package to the TEX preamble. This may cause errors if the `acronym` package is already added. There is no need to add the following to the Markdown metadata block:
 ``````
 ---
 header-includes:
@@ -71,3 +71,17 @@ header-includes:
 * Will not work for acronyms which are plural without `s` suffix, for example, Systems on a Chip (SOACs).
 * Filter will only work for HTML and Latex (including PDF) outputs. Other outputs will only have the acronym definitions removed from the document.
 * Filter will not match an acronym with preceding punctuation like an opening bracket, for example `(HTML)`.
+
+## Options
+
+Options passed in through the metadata block are sent to the `acronym` Latex package as options. Unless otherwise stated, these options will have no impact on output other than Latex. Acronyms are not listed for other output formats anyway.
+
+| Option | Latex `acronym` package | Other affects | Default |
+|---|---|---|---|
+| `footnote` | Makes the full name appear as a footnote when the acronym is first used. | None | No |
+| `nohyperlinks` | If `hyperref` is loaded, all acronyms will link to their glossary entry. With the option `nohyperlinks` these links are suppressed. | None | Yes |
+| `printonlyused` | Only list used acronyms. | None | Yes |
+| `withpage` | Show the page number where each acronym was first used. Only works with `printonlyused` option. | None | No |
+| `smaller` | Make the acronym appear smaller. | None | No |
+| `dua` | “Don’t use acronyms”. Unless explicitly requested all acronyms are suppressed and the full name is given. | None | No |
+| `nolist` | The option nolist stands for “don’t write the list of acronyms”. | Also removes acronym header so there is not a section without any acronyms. | No |
