@@ -58,6 +58,22 @@ function has_nolist(doc)
     return false
 end
 
+-- Returns set of Latex code which defines the acronyms
+function get_acronym_declarations(keys, definitions)
+    local acronyms = {}
+    -- Add acronym descriptions in alphabetical order
+    table.sort(keys)
+    table.insert(acronyms, pandoc.RawBlock("latex", "\\begin{acronym}"))
+    for _, k in ipairs(keys) do
+        local v = definitions[k]
+        local acronym = "\\acro{" .. k .. "}{" .. v .. "}"
+        local block = pandoc.RawBlock("latex", acronym)
+        table.insert(acronyms, block)
+    end
+    table.insert(acronyms, pandoc.RawBlock("latex", "\\end{acronym}"))
+    return acronyms
+end
+
 function Pandoc(doc)
     
     add_packages(doc)
@@ -121,17 +137,8 @@ function Pandoc(doc)
     end
     -- Add list of acronyms
     if FORMAT == 'latex' then
-        -- Add acronym descriptions in alphabetical order
-        local list_acronyms = {}
-        table.sort(keys)
-        table.insert(list_acronyms, pandoc.RawBlock("latex", "\\begin{acronym}"))
-        for _, k in ipairs(keys) do
-            local v = definitions[k]
-            local acronym = "\\acro{" .. k .. "}{" .. v .. "}"
-            local block = pandoc.RawBlock("latex", acronym)
-            table.insert(list_acronyms, block)
-        end
-        table.insert(list_acronyms, pandoc.RawBlock("latex", "\\end{acronym}"))
+
+        local list_acronyms = get_acronym_declarations(keys, definitions)
 
         -- No list
         if has_nolist(doc) then
