@@ -29,11 +29,11 @@ function get_title(doc)
     end
 end
 
-function Pandoc(doc)
-    -- Add acronym package
-    local meta = doc.meta
-    local options = get_options(doc)
+-- Add Latex packages to document (acronym)
+function add_packages(doc)
     if FORMAT == 'latex' then
+        local meta = doc.meta
+        local options = get_options(doc)
         local package = pandoc.RawBlock("latex", "\\usepackage[".. table.concat(options, "," ) .. "]{acronym}")
         local metablocks = {}
         table.insert(metablocks, package)
@@ -45,6 +45,11 @@ function Pandoc(doc)
             meta["header-includes"] = pandoc.MetaList(metalist)
         end
     end
+end
+
+function Pandoc(doc)
+    
+    add_packages(doc)
 
     local blocks = doc.blocks
     -- Get all the acronym definitions
@@ -107,6 +112,7 @@ function Pandoc(doc)
     if FORMAT == 'latex' then
         -- Check for nolist option and remove heading if present
         local nolist = false
+        local options = get_options(doc)
         for _, v in ipairs(options) do
             if v == "nolist" then
                 nolist = true
@@ -152,5 +158,5 @@ function Pandoc(doc)
         end
 
     end
-    return pandoc.Pandoc(output, meta)
+    return pandoc.Pandoc(output, doc.meta)
 end
