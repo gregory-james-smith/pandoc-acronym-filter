@@ -80,6 +80,7 @@ function get_acronym_declarations(keys, definitions)
     return acronyms
 end
 
+-- Scan through the document and pick out the acronyms and a filter of the blocks without the acronym definitions
 function filter_document_for_acronyms(doc)
     -- List of acronyms sorted alphabetically
     local keys = {}
@@ -106,15 +107,10 @@ function filter_document_for_acronyms(doc)
     return keys, definitions, filtered_blocks
 end
 
-function Pandoc(doc)
-    
-    add_packages(doc)
-
-    local keys, definitions, filtered_blocks = filter_document_for_acronyms(doc)
-    
-    -- Replace all the acronyms
+-- Scans through the list of blocks and returns a new list of blocks with the acronymn text replaced with coded acronyms
+function replace_text_with_acronyms(definitions, blocks)
     output = {}
-    for i, block in pairs(filtered_blocks) do
+    for i, block in pairs(blocks) do
         if (block.tag == "Para") then
             output[i] = pandoc.walk_block(block, {
                 Str = function(el)
@@ -146,6 +142,17 @@ function Pandoc(doc)
             output[i] = block
         end
     end
+    return output
+end
+
+function Pandoc(doc)
+    
+    add_packages(doc)
+
+    local keys, definitions, filtered_blocks = filter_document_for_acronyms(doc)
+    
+    local output = replace_text_with_acronyms(definitions, filtered_blocks)
+    
     -- Add list of acronyms
     if FORMAT == 'latex' then
         local acronym_declarations = get_acronym_declarations(keys, definitions)
