@@ -2,7 +2,7 @@
 function get_options(doc)
     local meta = doc.meta
     local options = {}
-    if meta["pandoc-acronym-filter"]["options"] then
+    if meta["pandoc-acronym-filter"] and meta["pandoc-acronym-filter"]["options"] then
         for _,i in ipairs(meta["pandoc-acronym-filter"]["options"]) do
             for _,j in ipairs(i) do
                 for _,k in pairs(j) do
@@ -21,7 +21,7 @@ end
 -- Get title metadata
 function get_title(doc)
     local meta = doc.meta
-    local title = meta["pandoc-acronym-filter"]["title"]
+    local title = meta["pandoc-acronym-filter"] and meta["pandoc-acronym-filter"]["title"]
     if title then
         return pandoc.utils.stringify(title)
     else
@@ -47,6 +47,7 @@ function add_packages(doc)
         if meta["header-includes"] then
             table.insert(meta["header-includes"], metablocks)
         else
+            -- TODO: This code fails
             local metalist = {}
             table.insert(metalist, pandoc.MetaBlocks(metablocks))
             meta["header-includes"] = pandoc.MetaList(metalist)
@@ -146,12 +147,11 @@ function replace_text_with_acronyms(definitions, blocks)
 end
 
 function Pandoc(doc)
-    
-    add_packages(doc)
 
     local keys, definitions, filtered_blocks = filter_document_for_acronyms(doc)
-    
     local output = replace_text_with_acronyms(definitions, filtered_blocks)
+
+    add_packages(doc)
     
     -- Add list of acronyms
     if FORMAT == 'latex' then
@@ -176,5 +176,6 @@ function Pandoc(doc)
             append_list_to_table_bottom(output, acronym_declarations)
         end
     end
+
     return pandoc.Pandoc(output, doc.meta)
 end
