@@ -47,10 +47,8 @@ function add_packages(doc)
         if meta["header-includes"] then
             table.insert(meta["header-includes"], metablocks)
         else
-            -- TODO: This code fails
-            local metalist = {}
-            table.insert(metalist, pandoc.MetaBlocks(metablocks))
-            meta["header-includes"] = pandoc.MetaList(metalist)
+            meta["header-includes"] = {}
+            table.insert(meta["header-includes"], metablocks)
         end
     end
 end
