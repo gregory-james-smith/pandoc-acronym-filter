@@ -1,6 +1,6 @@
 # Pandoc Acronym Filter
 
-Pandoc LUA filter for parsing MMD acronym syntax for HTML and Latex output.
+Pandoc Lua filter for transforming Markdown documents using MMD acronym syntax into HTML and Latex documents.
 
 ## Script
 
@@ -39,6 +39,31 @@ You can use \ac{CSS} to style your \ac{HTML}.
     \acro{HTML}{Hyper Text Markup Language}
 \end{acronym}
 ```
+
+## Options
+
+Options can be added using the Markdown meta data block.
+
+```
+pandoc-acronym-filter:
+  options: [printonlyused]
+```
+
+These options only have an effect when generating Latex documents.
+
+### Latex
+
+These options are passed to the `acronym` Latex package as options and therefore have the same affect on the document. The `nolist` option has the addition affect of excluding the creation of any header for the list of acronyms. `nohyperlinks` and `printonlyused` are the default options if no options are provided.
+
+| Option | Latex `acronym` package option |
+|---|---|
+| `footnote` | Makes the full name appear as a footnote when the acronym is first used. |
+| `nohyperlinks` | If `hyperref` is loaded, all acronyms will link to their glossary entry. With the option `nohyperlinks` these links are suppressed. |
+| `printonlyused` | Only list used acronyms. |
+| `withpage` | Show the page number where each acronym was first used. Only works with `printonlyused` option. |
+| `smaller` | Make the acronym appear smaller. |
+| `dua` | “Don’t use acronyms”. Unless explicitly requested all acronyms are suppressed and the full name is given. |
+| `nolist` | The option nolist stands for “don’t write the list of acronyms”. |
 
 ## Features
 
@@ -91,23 +116,3 @@ pandoc-acronym-filter:
 * Filter will only work for HTML and Latex (including PDF) outputs. Other outputs will only have the acronym definitions removed from the document.
 * Filter will not match an acronym with preceding punctuation like an opening bracket, for example `(HTML)`.
 
-## Options
-
-Options passed in through the metadata block are sent to the `acronym` Latex package as options.
-
-```
-pandoc-acronym-filter:
-  options: [printonlyused]
-```
-
-Unless otherwise stated, these options will have no impact on output other than Latex.
-
-| Option | Latex `acronym` package | Other affects | Default |
-|---|---|---|---|
-| `footnote` | Makes the full name appear as a footnote when the acronym is first used. | None | No |
-| `nohyperlinks` | If `hyperref` is loaded, all acronyms will link to their glossary entry. With the option `nohyperlinks` these links are suppressed. | None | Yes |
-| `printonlyused` | Only list used acronyms. | None | Yes |
-| `withpage` | Show the page number where each acronym was first used. Only works with `printonlyused` option. | None | No |
-| `smaller` | Make the acronym appear smaller. | None | No |
-| `dua` | “Don’t use acronyms”. Unless explicitly requested all acronyms are suppressed and the full name is given. | None | No |
-| `nolist` | The option nolist stands for “don’t write the list of acronyms”. | Also removes acronym header so there is not a section without any acronyms. | No |
