@@ -82,17 +82,21 @@ If a no title is given then the list of acronyms is generated at the end of the 
 
 If a title is given and there is a heading in the document that matches the title, then the list of acronyms are generated immediately after that heading. If no heading matching the title can be found then the list of acronyms are generated at the end of the document with a section heading matching the title provided.
 
-### Benefits
+### Pattern matching
 
 * The filter will match the acronym even if it is followed by punctuation.
 * The filter will match the acronym even if it is an English plural (has an `s` suffix).
+* The filter will not match an acronym if it is followed by an ellipsis. The ellipsis is not recognised as punctuation by the pattern matching.
+* Filter will not match an acronym with preceding punctuation like an opening bracket, for example `(HTML)`.
+* Will not work for acronyms which are plural without `s` suffix, for example, Systems on a Chip (SOACs).
+
+### Benefits
 * The filter will add an acronym header above a list of acronym definitions at the end of the document.
 
 * First use of acronym is long form with short form following in brackets. Following usages are in short form.
 * Short forms can have an `s` suffix for plurality.
 
 * If you add a title and the title is in the document, the acronyms will be listed under it. If it is not in the document they will be listed at the end.
-* Acronyms are listed in alphabetical order.
 
 
 #### Latex
@@ -121,8 +125,5 @@ pandoc-acronym-filter:
 ### Limitations
 
 * Each acronym definition must be on their own line with a blank line between them.
-* The filter will not match an acronym if it is followed by an ellipsis. The ellipsis is not recognised as punctuation by the pattern matching.
-* Will not work for acronyms which are plural without `s` suffix, for example, Systems on a Chip (SOACs).
 * Filter will only work for HTML and Latex (including PDF) outputs. Other outputs will only have the acronym definitions removed from the document.
-* Filter will not match an acronym with preceding punctuation like an opening bracket, for example `(HTML)`.
 
