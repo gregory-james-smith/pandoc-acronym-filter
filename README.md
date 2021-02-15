@@ -21,6 +21,8 @@ You can use CSS to style your HTML.
 
 ## Output
 
+Outputs other than HTML and Latex (including PDF) will only have the acronym definitions removed from the document.
+
 ### HTML
 
 ```html
@@ -28,6 +30,10 @@ You can use CSS to style your HTML.
 ```
 
 ### Latex
+
+The first use of the acronym is in long form with short form following in brackets. Following usages are in short form.
+
+The `acronym` package is used to handle the acronyms. The filter will add the package to the Latex document. This may cause errors if the `acronym` package is already included.
 
 ```latex
 \usepackage[printonlyused,nohyperlinks]{acronym}
@@ -80,9 +86,9 @@ pandoc-acronym-filter:
 
 If a no title is given then the list of acronyms is generated at the end of the document with the default section heading of "Acronyms".
 
-If a title is given and there is a heading in the document that matches the title, then the list of acronyms are generated immediately after that heading. If no heading matching the title can be found then the list of acronyms are generated at the end of the document with a section heading matching the title provided.
+If a title is given and there is a heading in the document that matches the title, then the list of acronyms are generated immediately after that heading. If no heading matching the title can be found, then the list of acronyms are generated at the end of the document with a section heading added matching the title provided.
 
-### Pattern matching
+### Pattern matching for acronyms
 
 * The filter will match the acronym even if it is followed by punctuation.
 * The filter will match the acronym even if it is an English plural (has an `s` suffix).
@@ -90,40 +96,6 @@ If a title is given and there is a heading in the document that matches the titl
 * Filter will not match an acronym with preceding punctuation like an opening bracket, for example `(HTML)`.
 * Will not work for acronyms which are plural without `s` suffix, for example, Systems on a Chip (SOACs).
 
-### Benefits
-* The filter will add an acronym header above a list of acronym definitions at the end of the document.
-
-* First use of acronym is long form with short form following in brackets. Following usages are in short form.
-* Short forms can have an `s` suffix for plurality.
-
-* If you add a title and the title is in the document, the acronyms will be listed under it. If it is not in the document they will be listed at the end.
-
-
-#### Latex
-
-* Acronyms will appear in long form the first instance and the following instances in short form.
-* Uses the `acronym` package.
-* Adds the `acronym` package to the TEX preamble. This may cause errors if the `acronym` package is already added. Therefore there is no need to add the following to the Markdown metadata block:
-``````
----
-header-includes:
-- |
-  ```{=latex}
-  \usepackage[printonlyused,nohyperlinks]{acronym}
-  ```
----
-``````
-* Options can be sent to acronym package with the `options` metadata.
-* A title can be given with the `title` metadata. If provided the acronyms are listed under that heading. The heading must already exist in the document.
-
-```
-pandoc-acronym-filter:
-  options: [printonlyused]
-  title: "My acronyms"
-```
-
-### Limitations
+### Acronym definitions
 
 * Each acronym definition must be on their own line with a blank line between them.
-* Filter will only work for HTML and Latex (including PDF) outputs. Other outputs will only have the acronym definitions removed from the document.
-
