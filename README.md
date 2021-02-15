@@ -77,7 +77,7 @@ These options are passed to the `acronym` Latex package as options and therefore
 
 For Latex generated documents, all the acronyms are listed in the document so long as the `nolist` option is not included. The list of acronyms are in alphabetical order.
 
-A title of the list of acronyms can be added using the Markdown meta data block.
+A section heading is generated for the list of acronyms so long as at least one acronym is defined and used. The heading can be set using the Markdown meta data block.
 
 ```
 pandoc-acronym-filter:

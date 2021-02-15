@@ -81,6 +81,8 @@ end
 
 -- Scan through the document and pick out the acronyms and a filter of the blocks without the acronym definitions
 function filter_document_for_acronyms(doc)
+    -- Number of acronyms
+    local count = 0
     -- List of acronyms sorted alphabetically
     local keys = {}
     -- Map of acronym definitions
@@ -97,13 +99,14 @@ function filter_document_for_acronyms(doc)
             -- Do not add to filtered blocks
             definitions[acronym] = description
             table.insert(keys, acronym)
+            count = count + 1
         else
             table.insert(filtered_blocks, block)
         end
     end
 
     table.sort(keys)
-    return keys, definitions, filtered_blocks
+    return count, keys, definitions, filtered_blocks
 end
 
 -- Scans through the list of blocks and returns a new list of blocks with the acronymn text replaced with coded acronyms
@@ -156,7 +159,7 @@ end
 
 function Pandoc(doc)
 
-    local keys, definitions, filtered_blocks = filter_document_for_acronyms(doc)
+    local count, keys, definitions, filtered_blocks = filter_document_for_acronyms(doc)
     local output = replace_text_with_acronyms(definitions, filtered_blocks)
 
     add_packages(doc)
@@ -166,7 +169,7 @@ function Pandoc(doc)
         local acronym_declarations = get_acronym_declarations(keys, definitions)
         local title = get_title(doc)
         -- No list
-        if has_nolist(doc) then
+        if has_nolist(doc) or count == 0 then
             append_list_to_table_bottom(output, acronym_declarations)
         -- Title: Add declarations underneath heading
         elseif title then
