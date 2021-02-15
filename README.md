@@ -48,12 +48,23 @@ You can use \ac{CSS} to style your \ac{HTML}.
 * The filter will match the acronym even if it is an English plural (has an `s` suffix).
 * The filter will add an acronym header above a list of acronym definitions at the end of the document.
 
+* First use of acronym is long form with short form following in brackets. Following usages are in short form.
+* Short forms can have an `s` suffix for plurality.
+
+* If you add a title and the title is in the document, the acronyms will be listed under it. If it is not in the document they will be listed at the end.
+* Acronyms are listed in alphabetical order.
+
+```
+pandoc-acronym-filter:
+  title: "My acronyms"
+```
+
 #### Latex
 
 * Acronyms will appear in long form the first instance and the following instances in short form.
 * List of acronyms are in alphabetical order.
 * Uses the `acronym` package.
-* Adds the `acronym` package to the TEX preamble. This may cause errors if the `acronym` package is already added. There is no need to add the following to the Markdown metadata block:
+* Adds the `acronym` package to the TEX preamble. This may cause errors if the `acronym` package is already added. Therefore there is no need to add the following to the Markdown metadata block:
 ``````
 ---
 header-includes:
@@ -82,7 +93,14 @@ pandoc-acronym-filter:
 
 ## Options
 
-Options passed in through the metadata block are sent to the `acronym` Latex package as options. Unless otherwise stated, these options will have no impact on output other than Latex. Acronyms are not listed for other output formats anyway.
+Options passed in through the metadata block are sent to the `acronym` Latex package as options.
+
+```
+pandoc-acronym-filter:
+  options: [printonlyused]
+```
+
+Unless otherwise stated, these options will have no impact on output other than Latex.
 
 | Option | Latex `acronym` package | Other affects | Default |
 |---|---|---|---|
