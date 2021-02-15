@@ -144,6 +144,16 @@ function replace_text_with_acronyms(definitions, blocks)
     return output
 end
 
+-- Returns the index in the list of blocks where a heading is which matches the title, otherwise return nil
+function index_of_heading(blocks, title)
+    for index, block in ipairs(blocks) do
+        if block.tag == "Header" and pandoc.utils.stringify(block.content) == title then
+            return index
+        end
+    end
+    return nil
+end
+
 function Pandoc(doc)
 
     local keys, definitions, filtered_blocks = filter_document_for_acronyms(doc)
@@ -160,13 +170,16 @@ function Pandoc(doc)
             append_list_to_table_bottom(output, acronym_declarations)
         -- Title: Add declarations underneath heading
         elseif title then
-            for index, block in ipairs(output) do
-                if block.tag == "Header" and pandoc.utils.stringify(block.content) == title then
-                    for i,v in ipairs(acronym_declarations) do
-                        table.insert(output, index + i, v)
-                    end
-                    break
+            local index = index_of_heading(output, title)
+            if index then
+                -- Add list of acronyms under existing heading
+                for i,v in ipairs(acronym_declarations) do
+                    table.insert(output, index + i, v)
                 end
+            else
+                -- Add list of acronyms at end of document
+                table.insert(output, pandoc.Header(1, title))
+                append_list_to_table_bottom(output, acronym_declarations)
             end
         -- No title: Add declarations at bottom
         else
