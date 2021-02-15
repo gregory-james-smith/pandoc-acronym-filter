@@ -67,6 +67,21 @@ These options are passed to the `acronym` Latex package as options and therefore
 
 ## Features
 
+### List of acronyms
+
+For Latex generated documents, all the acronyms are listed in the document so long as the `nolist` option is not included. The list of acronyms are in alphabetical order.
+
+A title of the list of acronyms can be added using the Markdown meta data block.
+
+```
+pandoc-acronym-filter:
+  title: "My acronyms"
+```
+
+If a no title is given then the list of acronyms is generated at the end of the document with the default section heading of "Acronyms".
+
+If a title is given and there is a heading in the document that matches the title, then the list of acronyms are generated immediately after that heading. If no heading matching the title can be found then the list of acronyms are generated at the end of the document with a section heading matching the title provided.
+
 ### Benefits
 
 * The filter will match the acronym even if it is followed by punctuation.
@@ -79,15 +94,10 @@ These options are passed to the `acronym` Latex package as options and therefore
 * If you add a title and the title is in the document, the acronyms will be listed under it. If it is not in the document they will be listed at the end.
 * Acronyms are listed in alphabetical order.
 
-```
-pandoc-acronym-filter:
-  title: "My acronyms"
-```
 
 #### Latex
 
 * Acronyms will appear in long form the first instance and the following instances in short form.
-* List of acronyms are in alphabetical order.
 * Uses the `acronym` package.
 * Adds the `acronym` package to the TEX preamble. This may cause errors if the `acronym` package is already added. Therefore there is no need to add the following to the Markdown metadata block:
 ``````
