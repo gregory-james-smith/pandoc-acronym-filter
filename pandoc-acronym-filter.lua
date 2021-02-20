@@ -168,8 +168,11 @@ function Pandoc(doc)
     if FORMAT == 'latex' then
         local acronym_declarations = get_acronym_declarations(keys, definitions)
         local title = get_title(doc)
-        -- No list
-        if has_nolist(doc) or count == 0 then
+        -- No acronyms used
+        if count == 0 then
+            -- Do nothing
+        -- No list: only add definitions but no headers
+        elseif has_nolist(doc) then
             append_list_to_table_bottom(output, acronym_declarations)
         -- Title: Add declarations underneath heading
         elseif title then
@@ -184,7 +187,7 @@ function Pandoc(doc)
                 table.insert(output, pandoc.Header(1, title))
                 append_list_to_table_bottom(output, acronym_declarations)
             end
-        -- No title: Add declarations at bottom
+        -- No title: Add declarations and default header at bottom
         else
             table.insert(output, pandoc.Header(1, "Acronyms"))
             append_list_to_table_bottom(output, acronym_declarations)
