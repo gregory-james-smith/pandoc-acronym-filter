@@ -45,10 +45,10 @@ function add_packages(doc)
         local metablocks = {}
         table.insert(metablocks, package)
         if meta["header-includes"] then
-            table.insert(meta["header-includes"], metablocks)
+            table.insert(meta["header-includes"], 1, metablocks)
         else
             meta["header-includes"] = {}
-            table.insert(meta["header-includes"], metablocks)
+            table.insert(meta["header-includes"], 1, metablocks)
         end
     end
 end
